@@ -45,7 +45,7 @@ static bool measure_environment(float *temperature, float *humidity) {
     return (false);
 }
 
-Task taskSendMessage( TASK_SECOND * 1 , TASK_FOREVER, &sendMessage );
+Task taskSendMessage( TASK_MILLISECOND * 200 , TASK_FOREVER, &sendMessage );
 
 void sendMessage() {
 
@@ -71,7 +71,7 @@ void sendMessage() {
 
   // Serial.println(msg);
   mesh.sendBroadcast( msg );
-  taskSendMessage.setInterval( random( TASK_SECOND * 1, TASK_SECOND * 5 ));
+  taskSendMessage.setInterval( TASK_MILLISECOND * 200);
 }
 
 // Needed for painless library
