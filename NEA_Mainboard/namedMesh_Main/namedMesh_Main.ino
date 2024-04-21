@@ -123,7 +123,7 @@ void receivedCallback(uint32_t from, String &msg)
     // Serial.println(Motion2);
   }
   
-  if( (Temp3 != "null") || (Hum3 != "null") || (Lux3 != "null") )
+  if( (PIR3 != "null") || (Lux3 != "null") )
   {
     sprintf(buffer, "PIR3:%03d", PIR3.toInt());
     display.printFixed(65,  32, buffer, STYLE_NORMAL);
