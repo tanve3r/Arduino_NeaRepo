@@ -29,6 +29,9 @@ static int detection1_pervious = 0;
 static int detection2_pervious = 0;
 static int motion1 =0;
 static int motion2 = 0;
+static int transInt = 500;
+static int lastdet = 0;
+
 
 String nodeName = "MainBoard"; // Name needs to be unique
 
@@ -174,14 +177,20 @@ void receivedCallback(uint32_t from, String &msg)
   }
 
   if(detetion1_set==1 && detection2_set==1)
-  {
-    if(motion1 > 10 && motion2 > 10)
+  { 
+    if(millis() - lastdet > transInt)
     {
-      detetion1_set = 0;
-      detection2_set = 0;
-      incrementlogic = 0;
-      decrementlogic = 0;
+        if(motion1 > 10 && motion2 > 10)
+        {
+          detetion1_set = 0;
+          detection2_set = 0;
+          incrementlogic = 0;
+          decrementlogic = 0;
+        }
     }
+    lastdet = millis();
+
+
   }
 
   sprintf(buffer, " PerCo:%03d", PersonCount);
