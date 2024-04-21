@@ -65,9 +65,8 @@ void receivedCallback(uint32_t from, String &msg)
   String Lux2 = doc["L2"];
   String Motion2 = doc["M2"];
 
-  String Temp3 = doc["T3"];
-  String Hum3 = doc["H3"];
   String Lux3 = doc["L3"];
+  String PIR3 = doc["M3"];
 
   if( (Temp1 != "null") || (Hum1 != "null") || (Lux1 != "null") || (Motion1 != "null") )
   {
@@ -126,16 +125,22 @@ void receivedCallback(uint32_t from, String &msg)
   
   if( (Temp3 != "null") || (Hum3 != "null") || (Lux3 != "null") )
   {
-    sprintf(buffer, "Temp3:%03d", Temp3.toInt());
+    sprintf(buffer, "PIR3:%03d", PIR3.toInt());
     display.printFixed(65,  32, buffer, STYLE_NORMAL);
 
-    sprintf(buffer, "Humi3:%03d", Hum3.toInt());
-    display.printFixed(65,  40, buffer, STYLE_NORMAL);
-
     sprintf(buffer, "Lux3 :%03d", Lux3.toInt());
-    display.printFixed(65,  48, buffer, STYLE_NORMAL);
+    display.printFixed(65,  40, buffer, STYLE_NORMAL);
     // Serial.printf("Lux3: ");
     // Serial.println(Lux3);
+
+    if((PIR3.toInt() == 1) && (Lux3.toInt() < 100))
+    {
+      digitalWrite(relay1pin, LOW);
+    }
+    else
+    {
+      // switch on buzzer ??
+    }
   }
 
   // Serial.printf("d1:%d d2: %d \n",detetion1_set,detection2_set);
@@ -236,12 +241,12 @@ void setup() {
   display.printFixed(65,  8, "Lux2 :0", STYLE_NORMAL);
   display.printFixed(65,  16, "Mot2 :0", STYLE_NORMAL);
   display.printFixed(65,  24, "USD2 :0", STYLE_NORMAL);
-  display.printFixed(65,  32, "Temp3:0", STYLE_NORMAL);
-  display.printFixed(65,  40, "Humi3:0", STYLE_NORMAL);
-  display.printFixed(65,  48, "Lux3 :0", STYLE_NORMAL);
+  display.printFixed(65,  32, "PIR3:0", STYLE_NORMAL);
+  display.printFixed(65,  40, "Lux3 :0", STYLE_NORMAL);
   pinMode(relay1pin, OUTPUT);
   pinMode(relay2pin, OUTPUT);
   digitalWrite(relay1pin, HIGH);
+  digitalWrite(relay2pin, HIGH);
 }
 
 void loop() {
