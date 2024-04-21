@@ -51,7 +51,7 @@ static bool measure_environment(float *temperature, float *humidity) {
     return (false);
 }
 
-Task taskSendMessage( TASK_SECOND*30, TASK_FOREVER, []() {
+Task taskSendMessage( TASK_MILLISECOND*200, TASK_FOREVER, []() {
     // String msg = String("This is a message from: ") + nodeName + String(" for logNode");
     String to = "MainBoard";
 
@@ -76,6 +76,7 @@ Task taskSendMessage( TASK_SECOND*30, TASK_FOREVER, []() {
     serializeJson(doc,msg);
 
     mesh.sendSingle(to, msg); 
+    taskSendMessage.setInterval( TASK_MILLISECOND * 200);
 }); // start with a one second interval
 
 void setup() {

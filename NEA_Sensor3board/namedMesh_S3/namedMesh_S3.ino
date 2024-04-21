@@ -33,7 +33,6 @@ boolean startTimer = false;
 boolean motion = false;
 
 
-
 // static const int DHT_SENSOR_PIN = 32;
 // DHT_Async dht_sensor(DHT_SENSOR_PIN, DHT_SENSOR_TYPE);
 
@@ -48,6 +47,8 @@ void IRAM_ATTR detectsMovement() {
   digitalWrite(led, HIGH);
   startTimer = true;
   lastTrigger = millis();
+  motion = true;
+  Serial.println("MOTION DETECTED!!!");
 }
 
 // /*
@@ -68,7 +69,7 @@ void IRAM_ATTR detectsMovement() {
 //     return (false);
 // }
 
-Task taskSendMessage( TASK_SECOND*30, TASK_FOREVER, []() {
+Task taskSendMessage( TASK_MILLISECOND*100, TASK_FOREVER, []() {
     // String msg = String("This is a message from: ") + nodeName + String(" for logNode");
     String to = "MainBoard";
 
@@ -134,14 +135,15 @@ void loop() {
 
   // Current time
   now = millis();
-  if((digitalRead(led) == HIGH) && (motion == false)) {
-    Serial.println("MOTION DETECTED!!!");
-    motion = true;
-  }
+  // if((digitalRead(led) == HIGH) && (motion == false)) 
+  // {
+  //   Serial.println("MOTION DETECTED!!!");
+  //   motion = true;
+  // }
   // Turn off the LED after the number of seconds defined in the timeSeconds variable
-  if(startTimer && (now - lastTrigger > (timeSeconds*1000))) {
+  if(startTimer && (now - lastTrigger > (timeSeconds * 1000))) {
     Serial.println("Motion stopped...");
-    digitalWrite(led, LOW);
+    // digitalWrite(led, LOW);
     startTimer = false;
     motion = false;
   }
